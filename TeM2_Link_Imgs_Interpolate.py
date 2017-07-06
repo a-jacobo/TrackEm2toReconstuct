@@ -9,7 +9,7 @@ from natsort import natsorted
 from scipy import interpolate
 
 
-''' 
+'''
  Adrian Jacobo - June 2017
  Fix image names in TrackEm2 exported files by matching to the image names.
 '''
@@ -42,13 +42,13 @@ for z in range(nfiles):
     # Read the TEM2 exported file for slice z and get the root of the xlm tree
     TEM2_tree = ET.parse(TEM2_path+TEM2_name)
     TEM2_root = TEM2_tree.getroot()
-    
+
 
     TEM2_img_tag = TEM2_root.find('./Transform/Image')
     TEM2_img_tag.set('src',img_filenames[z]) #Replace the image name by the one in the list of image names
     TEM2_img_tag.set('brightness','0') #Replace the brightness by the one in the reconstruct file
     TEM2_img_tag.set('contrast','1') #Replace the contrast by the one in the reconstruct file
-    
+
     #TEM2_section_index =  TEM2_root.attrib['index']
     #TEM2_root.set('index',str(int(TEM2_section_index)+1))
 
@@ -68,7 +68,7 @@ for z in range(nfiles):
         new_contour=ET.SubElement(new_transform,'Contour',attrib=contour.attrib)
         lpoints=contour.attrib['points'].split(',')[0:-1] #take up to the second to last element to eliminate remining spaces
         lpoints = np.array([map(float,i.split()) for i in lpoints])
-           
+
         # Find distances between points, if they are too small interpolate to smooth the curves
         diff = np.diff(lpoints,axis=0)
         dist = np.linalg.norm(diff,axis=1)
@@ -88,7 +88,7 @@ for z in range(nfiles):
             # evaluate the spline fits for 1000 evenly spaced distance values
             xi, yi = interpolate.splev(np.linspace(0, 1, n), tck)
             lpoints=np.stack((xi,yi),axis=1)
-        
+
         for i in range(lpoints.shape[0]):
             lpoints[i,0]=lpoints[i,0]
             lpoints[i,1]=lpoints[i,1]
@@ -106,32 +106,3 @@ for z in range(nfiles):
     f=open(outpath+outname,'w')
     f.write(filestring)
     f.close()
-#    exit()
-
-
-#    filestring = ET.tostring(TEM2_tree,pretty_print=True,
-#                         xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                         doctype=TEM2_tree.docinfo.doctype)
-
-
-#    for contour in TEM2_root.findall('./Transform/Contour'):
-#        if contour.attrib['name']== 'domain1':
-#                contour.set('points',R_domain_points)
-#        else:
-#                contour.set('mode','11')
-
-#    filestring = ET.tostring(TEM2_tree,pretty_print=True,
-#                xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                doctype=TEM2_tree.docinfo.doctype)
-
-#    TEM2_tree.write(outpath+R_name,pretty_print=True,
-#                    xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                    doctype=TEM2_tree.docinfo.doctype)
-
-#    f=open(outpath+R_name,'w')
-#    f.write(filestring)
-#    f.close()
-#        content = f.read()
-#        f.seek(0, 0)
-#        f.write(line.rstrip('\r\n') + '\n' + content)
-

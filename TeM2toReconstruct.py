@@ -7,7 +7,7 @@ from copy import deepcopy
 
 from natsort import natsorted
 
-''' 
+'''
  Adrian Jacobo - May 2017
  Fix image names in TrackEm2 exported files
 '''
@@ -46,7 +46,7 @@ for z in range(nfiles):
     # Read the TEM2 exported file for slice z and get the root of the xlm tree
     TEM2_tree = ET.parse(TEM2_path+TEM2_name)
     TEM2_root = TEM2_tree.getroot()
-    
+
     TEM2_img_tag = TEM2_root.find('./Transform/Image')
     TEM2_img_tag.set('src',R_img_name) #Replace the image name by the one in the reconstruct file
     TEM2_img_tag.set('brightness','0') #Replace the brightness by the one in the reconstruct file
@@ -64,7 +64,6 @@ for z in range(nfiles):
     N_root.append(TEM2_img_tag.getparent())
     for contour in TEM2_root.findall('./Transform/Contour'):
         transform = contour.getparent()
-        #N_root.append(ET.Element('Transform',attrib=transform.attrib))
         new_transform=ET.SubElement(N_root,'Transform',attrib=transform.attrib)
         new_contour=ET.SubElement(new_transform,'Contour',attrib=contour.attrib)
         lpoints=contour.attrib['points'].split(',')[0:-1] #take up to the second to last element to eliminate remining spaces
@@ -73,7 +72,6 @@ for z in range(nfiles):
         for i in range(lpoints.shape[0]):
             ct_output=ct_output+'%1.4f' % lpoints[i,0]+' '+'%1.4f' % lpoints[i,1]+','+'\n'
             new_contour.set('points',ct_output)
-#        new_transform = N_root.append(transform)
 
     filestring = ET.tostring(N_tree,pretty_print=True,
                       xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
@@ -83,32 +81,3 @@ for z in range(nfiles):
     f=open(outpath+R_name,'w')
     f.write(filestring)
     f.close()
-#    exit()
-
-
-#    filestring = ET.tostring(TEM2_tree,pretty_print=True,
-#                         xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                         doctype=TEM2_tree.docinfo.doctype)
-
-
-#    for contour in TEM2_root.findall('./Transform/Contour'):
-#        if contour.attrib['name']== 'domain1':
-#                contour.set('points',R_domain_points)
-#        else:
-#                contour.set('mode','11')
-
-#    filestring = ET.tostring(TEM2_tree,pretty_print=True,
-#                xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                doctype=TEM2_tree.docinfo.doctype)
-
-#    TEM2_tree.write(outpath+R_name,pretty_print=True,
-#                    xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                    doctype=TEM2_tree.docinfo.doctype)
-
-#    f=open(outpath+R_name,'w')
-#    f.write(filestring)
-#    f.close()
-#        content = f.read()
-#        f.seek(0, 0)
-#        f.write(line.rstrip('\r\n') + '\n' + content)
-

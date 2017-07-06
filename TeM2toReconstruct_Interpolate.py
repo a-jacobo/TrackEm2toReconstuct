@@ -9,7 +9,7 @@ from natsort import natsorted
 from scipy import interpolate
 from scipy.stats import mode
 
-''' 
+'''
  Adrian Jacobo - May 2017
  Fix image names in TrackEm2 exported files using the original Reconstruct file.
  Register traces back to images.
@@ -66,7 +66,7 @@ for z in range(nfiles):
     TEM2_img_tag.set('src',R_img_name) #Replace the image name by the one in the reconstruct file
     TEM2_img_tag.set('brightness','0') #Replace the brightness by the one in the reconstruct file
     TEM2_img_tag.set('contrast','1') #Replace the contrast by the one in the reconstruct file
-    
+
     TEM2_section_index =  TEM2_root.attrib['index']
     TEM2_root.set('index',str(int(TEM2_section_index)+1))
 
@@ -103,7 +103,7 @@ for z in range(nfiles):
         if name !='domain1':
             lpoints=contour.attrib['points'].split(',')[0:-1] #take up to the second to last element to eliminate remining spaces
             lpoints = np.array([map(float,i.split()) for i in lpoints])
-           
+
             # Find distances between points, if they are too small interpolate to smooth the curves
             #print contour.attrib['name']
             diff = np.diff(lpoints,axis=0)
@@ -130,7 +130,7 @@ for z in range(nfiles):
                     print 'Unable to interpolate'
                     print x
                     print i
-        
+
             for i in range(lpoints.shape[0]):
                 lpoints[i,0]=lpoints[i,0]+shift[0] #Shift new dataset
                 lpoints[i,1]=lpoints[i,1]+shift[1]
@@ -149,32 +149,3 @@ for z in range(nfiles):
     f=open(outpath+R_name,'w')
     f.write(filestring)
     f.close()
-#    exit()
-
-
-#    filestring = ET.tostring(TEM2_tree,pretty_print=True,
-#                         xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                         doctype=TEM2_tree.docinfo.doctype)
-
-
-#    for contour in TEM2_root.findall('./Transform/Contour'):
-#        if contour.attrib['name']== 'domain1':
-#                contour.set('points',R_domain_points)
-#        else:
-#                contour.set('mode','11')
-
-#    filestring = ET.tostring(TEM2_tree,pretty_print=True,
-#                xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                doctype=TEM2_tree.docinfo.doctype)
-
-#    TEM2_tree.write(outpath+R_name,pretty_print=True,
-#                    xml_declaration=True, encoding=TEM2_tree.docinfo.encoding,
-#                    doctype=TEM2_tree.docinfo.doctype)
-
-#    f=open(outpath+R_name,'w')
-#    f.write(filestring)
-#    f.close()
-#        content = f.read()
-#        f.seek(0, 0)
-#        f.write(line.rstrip('\r\n') + '\n' + content)
-
