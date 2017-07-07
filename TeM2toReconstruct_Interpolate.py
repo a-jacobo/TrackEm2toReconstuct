@@ -16,15 +16,7 @@ from scipy.stats import mode
  Remove jaggedness from TrackEm2 traces using interpolation.
 '''
 
-# Path to the TrackEM2 traces
-#TEM2_path ='/Volumes/Eliot_Datasets/TrakEM-Reconstruct Tests/Stair_Case/'
-# Path to the Reconstruct traces
-#R_path ='/Volumes/Eliot_Datasets/TrakEM-Reconstruct Tests/Stair_Case/'
-# Output path
-#outpath ='/Volumes/Eliot_Datasets/TrakEM-Reconstruct Tests/Stair_Case/Smoothed/'
-
 dataset_name='T5.9'
-
 
 # Path to the TrackEM2 traces
 TEM2_path ='/Volumes/Eliot_Datasets/Original_Datasets/'+dataset_name+'/20170608_T5.9_TrakEM-export/'
